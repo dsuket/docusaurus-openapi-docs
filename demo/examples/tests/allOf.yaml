@@ -367,6 +367,98 @@ paths:
                       otherOuterProp:
                         type: string
 
+  /allof-nested-array-items:
+    get:
+      tags:
+        - allOf
+      summary: allOf with Nested Array Items
+      description: |
+        A list of books demonstrating allOf with nested items as children.
+
+        Schema:
+        ```yaml
+        type: array
+        items:
+          type: object
+          properties:
+            books:
+              type: array
+              items:
+                $ref: '#/components/schemas/Book'
+            pagination:
+              type: object
+              properties:
+                page_number:
+                  type: integer
+                page_size:
+                  type: integer
+        ```
+      responses:
+        "200":
+          description: A list of books with pagination
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  books:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Book"
+                  pagination:
+                    type: object
+                    properties:
+                      page_number:
+                        type: integer
+                      page_size:
+                        type: integer
+
+  /allof-nested-array-with-properties:
+    get:
+      tags:
+        - allOf
+      summary: allOf in Nested Array with Properties
+      description: |
+        A list of books demonstrating allOf with nested array with properties.
+
+        Schema:
+        ```yaml
+        type: array
+        items:
+          type: object
+          properties:
+            books:
+              type: array
+              items:
+                $ref: '#/components/schemas/CategorizedBook'
+            pagination:
+              type: object
+              properties:
+                page_number:
+                  type: integer
+                page_size:
+                  type: integer
+        ```
+      responses:
+        "200":
+          description: A list of books
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  books:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/CategorizedBook"
+                  pagination:
+                    type: object
+                    properties:
+                      page_number:
+                        type: integer
+                      page_size:
+                        type: integer
+
 components:
   schemas:
     # Your existing schemas are integrated here.

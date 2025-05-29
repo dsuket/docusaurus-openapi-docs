@@ -108,7 +108,7 @@ const AnyOneOf = ({ schema, schemaType }) => {
       SchemaTabs_1.default,
       null,
       schema[type]?.map((anyOneSchema, index) => {
-        const label = anyOneSchema.title || `MOD${index + 1}`;
+        const label = anyOneSchema.title || anyOneSchema.type;
         return (
           // @ts-ignore
           react_1.default.createElement(
@@ -625,6 +625,16 @@ const SchemaEdge = ({ name, schema, required, discriminator, schemaType }) => {
       schemaType: schemaType,
     });
   }
+  if (schema.items?.allOf) {
+    return react_1.default.createElement(SchemaNodeDetails, {
+      name: name,
+      schemaName: schemaName,
+      required: required,
+      nullable: schema.nullable,
+      schema: schema,
+      schemaType: schemaType,
+    });
+  }
   if (schema.allOf) {
     // handle circular properties
     if (
@@ -677,7 +687,7 @@ const SchemaEdge = ({ name, schema, required, discriminator, schemaType }) => {
       });
     }
     if (mergedSchemas.items?.properties) {
-      react_1.default.createElement(SchemaNodeDetails, {
+      return react_1.default.createElement(SchemaNodeDetails, {
         name: name,
         schemaName: mergedSchemaName,
         required: Array.isArray(mergedSchemas.required)
