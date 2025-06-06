@@ -8,6 +8,8 @@
 import React, { ReactNode } from "react";
 
 import Markdown from "@theme/Markdown";
+import SchemaTabs from "@theme/SchemaTabs";
+import TabItem from "@theme/TabItem";
 import clsx from "clsx";
 
 import { guard } from "../../markdown/utils";
@@ -63,6 +65,7 @@ export default function SchemaItem(props: Props) {
   let schemaDescription;
   let defaultValue: string | undefined;
   let example: string | undefined;
+  let examples: any[] | undefined;
   let nullable;
   let enumDescriptions: [string, string][] = [];
   let constValue: string | undefined;
@@ -73,6 +76,7 @@ export default function SchemaItem(props: Props) {
     enumDescriptions = transformEnumDescriptions(schema["x-enumDescriptions"]);
     defaultValue = schema.default;
     example = schema.example;
+    examples = schema.examples;
     nullable =
       schema.nullable ||
       (Array.isArray(schema.type) && schema.type.includes("null")); // support JSON Schema nullable
@@ -163,6 +167,46 @@ export default function SchemaItem(props: Props) {
     return undefined;
   }
 
+  function renderExamplesList() {
+    if (examples && Array.isArray(examples) && examples.length > 0) {
+      if (examples.length === 1) {
+        const value = examples[0];
+        if (typeof value === "string") {
+          return (
+            <div>
+              <strong>Example: </strong>
+              <span>
+                <code>{value}</code>
+              </span>
+            </div>
+          );
+        }
+        return (
+          <div>
+            <strong>Example: </strong>
+            <span>
+              <code>{JSON.stringify(value)}</code>
+            </span>
+          </div>
+        );
+      }
+      return (
+        <>
+          <strong>Examples:</strong>
+          <SchemaTabs>
+            {examples.map((ex, i) => (
+              // @ts-ignore
+              <TabItem key={i} value={String(i)} label={`Example ${i + 1}`}>
+                <code>{typeof ex === "string" ? ex : JSON.stringify(ex)}</code>
+              </TabItem>
+            ))}
+          </SchemaTabs>
+        </>
+      );
+    }
+    return undefined;
+  }
+
   function renderConstValue() {
     if (constValue !== undefined) {
       if (typeof constValue === "string") {
@@ -213,6 +257,7 @@ export default function SchemaItem(props: Props) {
       {renderConstValue()}
       {renderDefaultValue()}
       {renderExample()}
+      {renderExamplesList()}
       {collapsibleSchemaContent ?? collapsibleSchemaContent}
     </div>
   );
