@@ -108,7 +108,7 @@ const AnyOneOf = ({ schema, schemaType }) => {
       SchemaTabs_1.default,
       null,
       schema[type]?.map((anyOneSchema, index) => {
-        const label = anyOneSchema.title || `MOD${index + 1}`;
+        const label = anyOneSchema.title || anyOneSchema.type;
         return (
           // @ts-ignore
           react_1.default.createElement(
