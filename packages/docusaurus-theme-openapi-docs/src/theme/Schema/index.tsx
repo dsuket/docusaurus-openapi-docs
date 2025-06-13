@@ -116,10 +116,7 @@ const AnyOneOf: React.FC<SchemaProps> = ({ schema, schemaType }) => {
       </span>
       <SchemaTabs>
         {schema[type]?.map((anyOneSchema: any, index: number) => {
-          const label =
-            anyOneSchema.title || isPrimitive(anyOneSchema)
-              ? anyOneSchema.type
-              : `MOD${index + 1}`;
+          const label = anyOneSchema.title || anyOneSchema.type;
           return (
             // @ts-ignore
             <TabItem
