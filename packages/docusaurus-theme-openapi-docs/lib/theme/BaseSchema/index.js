@@ -36,17 +36,24 @@ const BaseSchemaComponent = ({ title, body, style, schemaType }) => {
       MimeTabs_1.default,
       { className: "openapi-tabs__mime", schemaType: schemaType },
       mimeTypes.map((mimeType) => {
-        const mimeExamples = body.content[mimeType].examples;
-        const mimeExample = body.content[mimeType].example;
-        const schemaExamples = body.content[mimeType].schema?.examples;
-        const schemaExample = body.content[mimeType].schema?.example;
-        const firstBody = body.content[mimeType].schema;
+        const mimeExamples = body.content?.[mimeType]?.examples;
+        const mimeExample = body.content?.[mimeType]?.example;
+        const schemaExamples = body.content?.[mimeType]?.schema?.examples;
+        const schemaExample = body.content?.[mimeType]?.schema?.example;
+        const firstBody = body.content?.[mimeType]?.schema;
         if (
           firstBody === undefined ||
           (firstBody.properties &&
             Object.keys(firstBody.properties).length === 0)
         ) {
-          return null;
+          return (
+            // @ts-ignore
+            react_1.default.createElement(
+              TabItem_1.default,
+              { key: mimeType, label: mimeType, value: mimeType },
+              react_1.default.createElement("div", null, "No schema")
+            )
+          );
         }
         if (firstBody) {
           const tabTitle = "Schema";
