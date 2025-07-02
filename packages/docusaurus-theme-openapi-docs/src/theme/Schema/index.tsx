@@ -738,9 +738,7 @@ const SchemaEdge: React.FC<SchemaEdgeProps> = ({
           name={name}
           schemaName={mergedSchemaName}
           required={
-            Array.isArray(mergedSchemas.required)
-              ? mergedSchemas.required.includes(name)
-              : mergedSchemas.required
+            Array.isArray(required) ? required.includes(name) : required
           }
           nullable={mergedSchemas.nullable}
           schema={mergedSchemas}
@@ -755,9 +753,7 @@ const SchemaEdge: React.FC<SchemaEdgeProps> = ({
           name={name}
           schemaName={mergedSchemaName}
           required={
-            Array.isArray(mergedSchemas.required)
-              ? mergedSchemas.required.includes(name)
-              : mergedSchemas.required
+            Array.isArray(required) ? required.includes(name) : required
           }
           nullable={mergedSchemas.nullable}
           schema={mergedSchemas}
