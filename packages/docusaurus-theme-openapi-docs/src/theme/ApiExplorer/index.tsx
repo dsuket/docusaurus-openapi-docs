@@ -7,12 +7,13 @@
 
 import React from "react";
 
+import { useDoc } from "@docusaurus/plugin-content-docs/client";
 import CodeSnippets from "@theme/ApiExplorer/CodeSnippets";
 import Request from "@theme/ApiExplorer/Request";
 import Response from "@theme/ApiExplorer/Response";
 import SecuritySchemes from "@theme/ApiExplorer/SecuritySchemes";
 import { ApiItem } from "docusaurus-plugin-openapi-docs/src/types";
-import sdk from "postman-collection";
+import * as sdk from "postman-collection";
 
 function ApiExplorer({
   item,
@@ -21,7 +22,16 @@ function ApiExplorer({
   item: NonNullable<ApiItem>;
   infoPath: string;
 }) {
-  const postman = new sdk.Request(item.postman);
+  const metadata = useDoc();
+  const { mask_credentials } = metadata.frontMatter;
+
+  const postman = new sdk.Request(
+    item.postman
+      ? sdk.Request.isRequest(item.postman)
+        ? (item.postman as any).toJSON()
+        : (item.postman as any)
+      : {}
+  );
 
   return (
     <>
@@ -30,6 +40,7 @@ function ApiExplorer({
         <CodeSnippets
           postman={postman}
           codeSamples={(item as any)["x-codeSamples"] ?? []}
+          maskCredentials={mask_credentials}
         />
       )}
       <Request item={item} />
