@@ -625,6 +625,16 @@ const SchemaEdge = ({ name, schema, required, discriminator, schemaType }) => {
       schemaType: schemaType,
     });
   }
+  if (schema.items?.allOf) {
+    return react_1.default.createElement(SchemaNodeDetails, {
+      name: name,
+      schemaName: schemaName,
+      required: required,
+      nullable: schema.nullable,
+      schema: schema,
+      schemaType: schemaType,
+    });
+  }
   if (schema.allOf) {
     // handle circular properties
     if (
@@ -677,7 +687,7 @@ const SchemaEdge = ({ name, schema, required, discriminator, schemaType }) => {
       });
     }
     if (mergedSchemas.items?.properties) {
-      react_1.default.createElement(SchemaNodeDetails, {
+      return react_1.default.createElement(SchemaNodeDetails, {
         name: name,
         schemaName: mergedSchemaName,
         required: Array.isArray(mergedSchemas.required)

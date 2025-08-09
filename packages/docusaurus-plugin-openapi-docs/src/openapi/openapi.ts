@@ -15,8 +15,8 @@ import kebabCase from "lodash/kebabCase";
 import unionBy from "lodash/unionBy";
 import uniq from "lodash/uniq";
 import Converter from "openapi-to-postmanv2";
-import Collection from "postman-collection";
-import sdk from "postman-collection";
+import { Collection } from "postman-collection";
+import * as sdk from "postman-collection";
 
 import { sampleRequestFromSchema } from "./createRequestExample";
 import { OpenApiObject, TagGroupObject, TagObject } from "./types";
@@ -43,9 +43,15 @@ function jsonToCollection(data: OpenApiObject): Promise<Collection> {
       { schemaFaker: false }
     );
     schemaPack.computedOptions.schemaFaker = false;
+
+    // Make sure the schema was properly validated or reject with error
+    if (!schemaPack.validationResult?.result) {
+      return reject(schemaPack.validationResult?.reason);
+    }
+
     schemaPack.convert((_err: any, conversionResult: any) => {
-      if (!conversionResult.result) {
-        return reject(conversionResult.reason);
+      if (_err || !conversionResult.result) {
+        return reject(_err || conversionResult.reason);
       }
       return resolve(new sdk.Collection(conversionResult.output[0].data));
     });
@@ -250,6 +256,9 @@ function createItems(
           ...(options?.showExtensions && {
             show_extensions: options.showExtensions,
           }),
+          ...(options?.maskCredentials === false && {
+            mask_credentials_disabled: true,
+          }),
         },
         api: {
           ...defaults,
@@ -263,6 +272,7 @@ function createItems(
           jsonRequestBodyExample,
           info: openapiData.info,
         },
+        position: operationObject["x-position"] as number | undefined,
       };
 
       items.push(apiPage);
@@ -273,11 +283,19 @@ function createItems(
   for (let [path, pathObject] of Object.entries(
     openapiData["x-webhooks"] ?? openapiData["webhooks"] ?? {}
   )) {
+    const eventName = path;
     path = "webhook";
     const { $ref, description, parameters, servers, summary, ...rest } =
       pathObject;
     for (let [method, operationObject] of Object.entries({ ...rest })) {
       method = "event";
+      if (
+        operationObject.summary === undefined &&
+        operationObject.operationId === undefined
+      ) {
+        operationObject.summary = eventName;
+      }
+
       const title =
         operationObject.summary ??
         operationObject.operationId ??
@@ -289,7 +307,7 @@ function createItems(
 
       const baseId = operationObject.operationId
         ? kebabCase(operationObject.operationId)
-        : kebabCase(operationObject.summary);
+        : kebabCase(operationObject.summary ?? eventName);
 
       const extensions = [];
       const commonExtensions = ["x-codeSamples"];
@@ -393,6 +411,9 @@ function createItems(
           }),
           ...(options?.showExtensions && {
             show_extensions: options.showExtensions,
+          }),
+          ...(options?.maskCredentials === false && {
+            mask_credentials_disabled: true,
           }),
         },
         api: {
@@ -508,6 +529,22 @@ function createItems(
         items.push(tagPage);
       });
   }
+
+  items.sort((a, b) => {
+    // Items with position come first, sorted by position
+    if (a.position !== undefined && b.position !== undefined) {
+      return a.position - b.position;
+    }
+    // Items with position come before items without position
+    if (a.position !== undefined) {
+      return -1;
+    }
+    if (b.position !== undefined) {
+      return 1;
+    }
+    // If neither has position, maintain original order
+    return 0;
+  });
 
   return items as ApiMetadata[];
 }

@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  * ========================================================================== */
 
-import React, { useState, useEffect, type JSX } from "react";
+import React, { useState, useEffect } from "react";
 
 import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
 import ApiCodeBlock from "@theme/ApiExplorer/ApiCodeBlock";
@@ -14,7 +14,7 @@ import CodeTabs from "@theme/ApiExplorer/CodeTabs";
 import { useTypedSelector } from "@theme/ApiItem/hooks";
 import cloneDeep from "lodash/cloneDeep";
 import codegen from "postman-code-generators";
-import sdk from "postman-collection";
+import * as sdk from "postman-collection";
 
 import { CodeSample, Language } from "./code-snippets-types";
 import {
@@ -29,9 +29,10 @@ export const languageSet: Language[] = generateLanguageSet();
 export interface Props {
   postman: sdk.Request;
   codeSamples: CodeSample[];
+  maskCredentials?: boolean;
 }
 
-function CodeTab({ children, hidden, className }: any): JSX.Element {
+function CodeTab({ children, hidden, className }: any): React.JSX.Element {
   return (
     <div role="tabpanel" className={className} {...{ hidden }}>
       {children}
@@ -39,7 +40,11 @@ function CodeTab({ children, hidden, className }: any): JSX.Element {
   );
 }
 
-function CodeSnippets({ postman, codeSamples }: Props) {
+function CodeSnippets({
+  postman,
+  codeSamples,
+  maskCredentials: propMaskCredentials,
+}: Props) {
   const { siteConfig } = useDocusaurusContext();
 
   const contentType = useTypedSelector((state: any) => state.contentType.value);
@@ -53,33 +58,42 @@ function CodeSnippets({ postman, codeSamples }: Props) {
   const headerParams = useTypedSelector((state: any) => state.params.header);
 
   const auth = useTypedSelector((state: any) => state.auth);
-  const clonedAuth = cloneDeep(auth);
-  let placeholder: string;
 
-  function cleanCredentials(obj: any) {
-    for (const key in obj) {
-      if (typeof obj[key] === "object" && obj[key] !== null) {
-        // use name as placeholder if exists
-        const comboAuthId = Object.keys(obj).join(" and ");
-        const authOptions =
-          clonedAuth?.options?.[key] ?? clonedAuth?.options?.[comboAuthId];
-        placeholder = authOptions?.[0]?.name;
-        obj[key] = cleanCredentials(obj[key]);
-      } else {
-        obj[key] = `<${placeholder ?? key}>`;
-      }
-    }
+  // Check if credential masking is enabled (default: true)
+  const maskCredentials = propMaskCredentials ?? true;
 
-    return obj;
-  }
+  // Clone Auth if maskCredentials is not false
+  const cleanedAuth = maskCredentials
+    ? (() => {
+        const clonedAuth = cloneDeep(auth);
+        let placeholder: string;
 
-  // scrub credentials from code snippets
-  const cleanedAuth = {
-    ...clonedAuth,
-    data: cleanCredentials(clonedAuth.data),
-  };
+        function cleanCredentials(obj: any) {
+          for (const key in obj) {
+            if (typeof obj[key] === "object" && obj[key] !== null) {
+              // use name as placeholder if exists
+              const comboAuthId = Object.keys(obj).join(" and ");
+              const authOptions =
+                clonedAuth?.options?.[key] ??
+                clonedAuth?.options?.[comboAuthId];
+              placeholder = authOptions?.[0]?.name;
+              obj[key] = cleanCredentials(obj[key]);
+            } else {
+              obj[key] = `<${placeholder ?? key}>`;
+            }
+          }
 
-  // Create a Postman request object using cleanedAuth
+          return obj;
+        }
+
+        return {
+          ...clonedAuth,
+          data: cleanCredentials(clonedAuth.data),
+        };
+      })()
+    : auth;
+
+  // Create a Postman request object using cleanedAuth or original auth
   const cleanedPostmanRequest = buildPostmanRequest(postman, {
     queryParams,
     pathParams,

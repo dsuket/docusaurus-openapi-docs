@@ -6,7 +6,7 @@
  * ========================================================================== */
 
 import { SidebarItemDoc } from "@docusaurus/plugin-content-docs/src/sidebars/types";
-import type Request from "postman-collection";
+import Request from "postman-collection";
 
 import {
   InfoObject,
@@ -52,6 +52,7 @@ export interface APIOptions {
   markdownGenerators?: MarkdownGenerator;
   showSchemas?: boolean;
   disableCompression?: boolean;
+  maskCredentials?: boolean;
 }
 
 export interface MarkdownGenerator {
@@ -118,6 +119,7 @@ export interface ApiMetadataBase {
   frontMatter: Record<string, unknown>;
   method?: string;
   path?: string;
+  position?: number;
 }
 
 export interface ApiPageMetadata extends ApiMetadataBase {
