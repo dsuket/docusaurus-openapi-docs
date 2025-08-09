@@ -685,6 +685,19 @@ const SchemaEdge: React.FC<SchemaEdgeProps> = ({
     );
   }
 
+  if (schema.items?.allOf) {
+    return (
+      <SchemaNodeDetails
+        name={name}
+        schemaName={schemaName}
+        required={required}
+        nullable={schema.nullable}
+        schema={schema}
+        schemaType={schemaType}
+      />
+    );
+  }
+
   if (schema.allOf) {
     // handle circular properties
     if (
@@ -754,18 +767,20 @@ const SchemaEdge: React.FC<SchemaEdgeProps> = ({
     }
 
     if (mergedSchemas.items?.properties) {
-      <SchemaNodeDetails
-        name={name}
-        schemaName={mergedSchemaName}
-        required={
-          Array.isArray(mergedSchemas.required)
-            ? mergedSchemas.required.includes(name)
-            : mergedSchemas.required
-        }
-        nullable={mergedSchemas.nullable}
-        schema={mergedSchemas}
-        schemaType={schemaType}
-      />;
+      return (
+        <SchemaNodeDetails
+          name={name}
+          schemaName={mergedSchemaName}
+          required={
+            Array.isArray(mergedSchemas.required)
+              ? mergedSchemas.required.includes(name)
+              : mergedSchemas.required
+          }
+          nullable={mergedSchemas.nullable}
+          schema={mergedSchemas}
+          schemaType={schemaType}
+        />
+      );
     }
 
     return (
