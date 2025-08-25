@@ -7,20 +7,22 @@
 
 import React from "react";
 
+import { translate } from "@docusaurus/Translate";
 import Markdown from "@theme/Markdown";
 import SchemaTabs from "@theme/SchemaTabs";
 import TabItem from "@theme/TabItem";
 /* eslint-disable import/no-extraneous-dependencies*/
+import { OPENAPI_SCHEMA_ITEM } from "@theme/translationIds";
 import clsx from "clsx";
 
 import { getQualifierMessage, getSchemaName } from "../../markdown/schema";
 import { guard, toString } from "../../markdown/utils";
 
 export interface ExampleObject {
-  summary?: string | null;
-  description?: string | null;
+  summary?: string;
+  description?: string;
   value?: any;
-  externalValue?: string | null;
+  externalValue?: string;
 }
 
 export interface Props {
@@ -53,13 +55,18 @@ ${enumDescriptions
 };
 
 function ParamsItem({ param, ...rest }: Props) {
-  const { description, name, required, deprecated, enumDescriptions } = param;
+  const {
+    description,
+    example,
+    examples,
+    name,
+    required,
+    deprecated,
+    enumDescriptions,
+  } = param;
 
   let schema = param.schema;
   let defaultValue: string | undefined;
-
-  let examples = param.examples || schema?.examples;
-  let example = param.example || schema?.example;
 
   if (!schema) {
     schema = { type: "any" };
@@ -82,11 +89,15 @@ function ParamsItem({ param, ...rest }: Props) {
   ));
 
   const renderSchemaRequired = guard(required, () => (
-    <span className="openapi-schema__required">required</span>
+    <span className="openapi-schema__required">
+      {translate({ id: OPENAPI_SCHEMA_ITEM.REQUIRED, message: "required" })}
+    </span>
   ));
 
   const renderDeprecated = guard(deprecated, () => (
-    <span className="openapi-schema__deprecated">deprecated</span>
+    <span className="openapi-schema__deprecated">
+      {translate({ id: OPENAPI_SCHEMA_ITEM.DEPRECATED, message: "deprecated" })}
+    </span>
   ));
 
   const renderQualifier = guard(getQualifierMessage(schema), (qualifier) => (
@@ -113,7 +124,12 @@ function ParamsItem({ param, ...rest }: Props) {
       if (typeof defaultValue === "string") {
         return (
           <div>
-            <strong>Default value: </strong>
+            <strong>
+              {translate({
+                id: OPENAPI_SCHEMA_ITEM.DEFAULT_VALUE,
+                message: "Default value:",
+              })}{" "}
+            </strong>
             <span>
               <code>{defaultValue}</code>
             </span>
@@ -122,7 +138,12 @@ function ParamsItem({ param, ...rest }: Props) {
       }
       return (
         <div>
-          <strong>Default value: </strong>
+          <strong>
+            {translate({
+              id: OPENAPI_SCHEMA_ITEM.DEFAULT_VALUE,
+              message: "Default value:",
+            })}{" "}
+          </strong>
           <span>
             <code>{JSON.stringify(defaultValue)}</code>
           </span>
@@ -134,76 +155,53 @@ function ParamsItem({ param, ...rest }: Props) {
 
   const renderExample = guard(toString(example), (example) => (
     <div>
-      <strong>Example: </strong>
-      <code>{example}</code>
+      <strong>
+        {translate({
+          id: OPENAPI_SCHEMA_ITEM.EXAMPLE,
+          message: "Example:",
+        })}{" "}
+      </strong>
+      {example}
     </div>
   ));
 
-  // Helper function to format example value
-  const formatExample = (example: any) => {
-    if (typeof example === "object" && example !== null) {
-      return JSON.stringify(example);
-    }
-    return String(example);
-  };
-
-  const renderExampleTabItem = (
-    exampleName: string,
-    exampleProperties: ExampleObject
-  ) => {
-    return (
-      // @ts-ignore
-      <TabItem value={exampleName} label={exampleName}>
-        {exampleProperties.summary && <p>{exampleProperties.summary}</p>}
-        {exampleProperties.description && (
-          <p>
-            <strong>Description: </strong>
-            <span>{exampleProperties.description}</span>
-          </p>
-        )}
-        <p>
-          <strong>Example: </strong>
-          <code>{formatExample(exampleProperties.value)}</code>
-        </p>
-      </TabItem>
-    );
-  };
-
   const renderExamples = guard(examples, (examples) => {
-    // Handle object-based examples (existing logic)
-    let exampleEntries: [string, ExampleObject][];
-    if (Array.isArray(examples)) {
-      exampleEntries = examples.map((example, index) => [
-        `Example ${index + 1}`,
-        { value: example, summary: null, description: null },
-      ]);
-    } else {
-      exampleEntries = Object.entries(examples);
-    }
-
-    // If there's only one example, display it without tabs
-    if (exampleEntries.length === 1) {
-      const firstExample = exampleEntries[0][1];
-      if (!firstExample) {
-        return undefined;
-      }
-      return (
-        <div>
-          <strong>Example: </strong>
-          <span>
-            <code>{formatExample(firstExample.value)}</code>
-          </span>
-        </div>
-      );
-    }
-
+    const exampleEntries = Object.entries(examples);
     return (
       <>
-        <strong>Examples:</strong>
+        <strong>
+          {translate({
+            id: OPENAPI_SCHEMA_ITEM.EXAMPLES,
+            message: "Examples:",
+          })}
+        </strong>
         <SchemaTabs>
-          {exampleEntries.map(([exampleName, exampleProperties]) =>
-            renderExampleTabItem(exampleName, exampleProperties)
-          )}
+          {exampleEntries.map(([exampleName, exampleProperties]) => (
+            // @ts-ignore
+            <TabItem value={exampleName} label={exampleName}>
+              {exampleProperties.summary && <p>{exampleProperties.summary}</p>}
+              {exampleProperties.description && (
+                <p>
+                  <strong>
+                    {translate({
+                      id: OPENAPI_SCHEMA_ITEM.DESCRIPTION,
+                      message: "Description:",
+                    })}{" "}
+                  </strong>
+                  <span>{exampleProperties.description}</span>
+                </p>
+              )}
+              <p>
+                <strong>
+                  {translate({
+                    id: OPENAPI_SCHEMA_ITEM.EXAMPLE,
+                    message: "Example:",
+                  })}{" "}
+                </strong>
+                <code>{exampleProperties.value}</code>
+              </p>
+            </TabItem>
+          ))}
         </SchemaTabs>
       </>
     );
