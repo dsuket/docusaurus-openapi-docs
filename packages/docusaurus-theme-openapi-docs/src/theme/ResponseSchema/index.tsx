@@ -10,7 +10,19 @@ import React from "react";
 import { translate } from "@docusaurus/Translate";
 import { OPENAPI_SCHEMA_ITEM } from "@theme/translationIds";
 
-import BaseSchema from "@theme/BaseSchema";
+import BrowserOnly from "@docusaurus/BrowserOnly";
+import Details from "@theme/Details";
+import Markdown from "@theme/Markdown";
+import MimeTabs from "@theme/MimeTabs"; // Assume these components exist
+import {
+  ExampleFromSchema,
+  ResponseExample,
+  ResponseExamples,
+} from "@theme/ResponseExamples";
+import SchemaNode from "@theme/Schema";
+import SchemaTabs from "@theme/SchemaTabs";
+import SkeletonLoader from "@theme/SkeletonLoader";
+import TabItem from "@theme/TabItem";
 import { MediaTypeObject } from "docusaurus-plugin-openapi-docs/lib/openapi/types";
 
 interface Props {
@@ -77,7 +89,10 @@ const ResponseSchemaComponent: React.FC<Props> = ({
                               {title}
                               {body.required === true && (
                                 <span className="openapi-schema__required">
-                                  required
+                                  {translate({
+                                    id: OPENAPI_SCHEMA_ITEM.REQUIRED,
+                                    message: "required",
+                                  })}
                                 </span>
                               )}
                             </strong>
@@ -123,7 +138,13 @@ const ResponseSchemaComponent: React.FC<Props> = ({
 };
 
 const ResponseSchema: React.FC<Props> = (props) => {
-  return <BaseSchema {...props} schemaType="response" />;
+  return (
+    <BrowserOnly fallback={<SkeletonLoader size="md" />}>
+      {() => {
+        return <ResponseSchemaComponent {...props} />;
+      }}
+    </BrowserOnly>
+  );
 };
 
 export default ResponseSchema;

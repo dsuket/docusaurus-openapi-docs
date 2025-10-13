@@ -8,12 +8,13 @@
 import React from "react";
 
 import { translate } from "@docusaurus/Translate";
+
 import Markdown from "@theme/Markdown";
 import SchemaTabs from "@theme/SchemaTabs";
 import TabItem from "@theme/TabItem";
 /* eslint-disable import/no-extraneous-dependencies*/
-import { OPENAPI_SCHEMA_ITEM } from "@theme/translationIds";
 import clsx from "clsx";
+import { OPENAPI_SCHEMA_ITEM } from "@theme/translationIds";
 
 import { getQualifierMessage, getSchemaName } from "../../markdown/schema";
 import { guard, toString } from "../../markdown/utils";
