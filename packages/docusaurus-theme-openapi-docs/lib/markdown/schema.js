@@ -37,6 +37,9 @@ function prettyName(schema, circular) {
         return schema.xml?.name ?? schema.type;
         // return schema.type;
     }
+    if (Array.isArray(schema.type)) {
+        return schema.type.join(" | ");
+    }
     return schema.title ?? schema.type;
 }
 function getSchemaName(schema, circular) {
