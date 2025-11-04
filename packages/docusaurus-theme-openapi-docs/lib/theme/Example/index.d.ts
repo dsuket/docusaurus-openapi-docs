@@ -6,11 +6,8 @@ type ExamplesType = Record<string, ExampleObject> | string[];
  * Example Component Props
  */
 type ExampleProps = {
-    example: ExampleType;
-    examples?: ExamplesType;
-} | {
     example?: ExampleType;
-    examples: ExamplesType;
+    examples?: ExamplesType;
 };
 /**
  * Example Component

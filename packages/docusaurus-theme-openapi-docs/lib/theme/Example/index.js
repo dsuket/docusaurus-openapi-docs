@@ -24,10 +24,10 @@ const EXAMPLES_CLASS_NAME = "openapi-examples";
  * Example Component
  */
 const Example = ({ example, examples }) => {
-  if (example) {
+  if (example !== undefined) {
     return renderExample(example);
   }
-  if (examples) {
+  if (examples !== undefined) {
     return renderExamples(examples);
   }
   return undefined;
@@ -55,12 +55,13 @@ const renderExample = (example) => {
       (0, Translate_1.translate)({
         id: translationIds_1.OPENAPI_SCHEMA_ITEM.EXAMPLE,
         message: "Example:",
-      })
+      }),
+      " "
     ),
     react_1.default.createElement(
       "span",
       null,
-      react_1.default.createElement("code", null, example)
+      react_1.default.createElement("code", null, formatExample(example))
     )
   );
 };
@@ -161,24 +162,9 @@ const renderExampleObject = (exampleName, exampleProperties) => {
             exampleProperties.description
           )
         ),
-      react_1.default.createElement(
-        "p",
-        null,
-        react_1.default.createElement(
-          "strong",
-          null,
-          (0, Translate_1.translate)({
-            id: translationIds_1.OPENAPI_SCHEMA_ITEM.EXAMPLE,
-            message: "Example:",
-          }),
-          " "
-        ),
-        react_1.default.createElement(
-          "code",
-          null,
-          formatExample(exampleProperties.value)
-        )
-      )
+      exampleProperties.value !== undefined
+        ? renderExample(exampleProperties.value)
+        : undefined
     )
   );
 };

@@ -45,8 +45,8 @@ function ParamsItem({ param, ...rest }) {
   const { description, name, required, deprecated, enumDescriptions } = param;
   let schema = param.schema;
   let defaultValue;
-  let examples = param.examples || schema?.examples;
-  let example = param.example || schema?.example;
+  let examples = param.examples ?? schema?.examples;
+  let example = param.example ?? schema?.example;
   if (!schema) {
     schema = { type: "any" };
   }
@@ -180,10 +180,8 @@ function ParamsItem({ param, ...rest }) {
     renderDescription,
     renderEnumDescriptions,
     renderDefaultValue(),
-    example &&
-      react_1.default.createElement(Example_1.Example, { example: example }),
-    examples &&
-      react_1.default.createElement(Example_1.Example, { examples: examples })
+    react_1.default.createElement(Example_1.Example, { example: example }),
+    react_1.default.createElement(Example_1.Example, { examples: examples })
   );
 }
 exports.default = ParamsItem;

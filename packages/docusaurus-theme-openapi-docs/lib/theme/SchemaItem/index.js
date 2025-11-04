@@ -263,10 +263,8 @@ function SchemaItem(props) {
     renderQualifierMessage,
     renderConstValue(),
     renderDefaultValue(),
-    example &&
-      react_1.default.createElement(Example_1.Example, { example: example }),
-    examples &&
-      react_1.default.createElement(Example_1.Example, { examples: examples }),
+    react_1.default.createElement(Example_1.Example, { example: example }),
+    react_1.default.createElement(Example_1.Example, { examples: examples }),
     collapsibleSchemaContent ?? collapsibleSchemaContent
   );
   return react_1.default.createElement(
