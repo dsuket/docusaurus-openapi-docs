@@ -1,5 +1,5 @@
 import type { SidebarItemDoc } from "@docusaurus/plugin-content-docs/lib/sidebars/types";
-import { InfoObject, OperationObject, SchemaObject, SecuritySchemeObject, TagObject } from "./openapi/types";
+import { InfoObject, OperationObject, SchemaObject, SecuritySchemeObject, TagObject, ServerObject } from "./openapi/types";
 export type { PropSidebarItemCategory, SidebarItemLink, PropSidebar, PropSidebarItem, } from "@docusaurus/plugin-content-docs/lib/sidebars/types";
 export interface PluginOptions {
     id?: string;
@@ -112,6 +112,7 @@ export interface InfoPageMetadata extends ApiMetadataBase {
     securitySchemes?: {
         [key: string]: SecuritySchemeObject;
     };
+    servers?: ServerObject[];
 }
 export interface TagPageMetadata extends ApiMetadataBase {
     type: "tag";

@@ -133,6 +133,7 @@ function createItems(openapiData, options, sidebarOptions) {
                     : "",
             },
             securitySchemes: (_b = openapiData.components) === null || _b === void 0 ? void 0 : _b.securitySchemes,
+            servers: openapiData.servers,
             info: {
                 ...openapiData.info,
                 tags: openapiData.tags,
