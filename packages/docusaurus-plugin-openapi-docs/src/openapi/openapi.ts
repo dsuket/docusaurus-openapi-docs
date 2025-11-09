@@ -124,6 +124,7 @@ function createItems(
           : "",
       },
       securitySchemes: openapiData.components?.securitySchemes,
+      servers: openapiData.servers,
       info: {
         ...openapiData.info,
         tags: openapiData.tags,

@@ -14,6 +14,7 @@ import {
   SchemaObject,
   SecuritySchemeObject,
   TagObject,
+  ServerObject,
 } from "./openapi/types";
 
 export type {
@@ -149,6 +150,7 @@ export interface InfoPageMetadata extends ApiMetadataBase {
   securitySchemes?: {
     [key: string]: SecuritySchemeObject;
   };
+  servers?: ServerObject[];
 }
 
 export interface TagPageMetadata extends ApiMetadataBase {
