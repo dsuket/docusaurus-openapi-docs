@@ -122,7 +122,6 @@ function createProperties(schema) {
             name: "",
             required: false,
             schemaName: "object",
-            qualifierMessage: undefined,
             schema: {},
         });
     }
@@ -151,7 +150,6 @@ function createAdditionalProperties(schema) {
             name: "property name*",
             required: false,
             schemaName: "any",
-            qualifierMessage: (0, schema_1.getQualifierMessage)(schema),
             schema: schema,
             collapsible: false,
             discriminator: false,
@@ -179,7 +177,6 @@ function createAdditionalProperties(schema) {
             name: "property name*",
             required: false,
             schemaName: schemaName,
-            qualifierMessage: (0, schema_1.getQualifierMessage)(schema),
             schema: additionalProperties,
             collapsible: false,
             discriminator: false,
@@ -336,10 +333,6 @@ function createDetailsNode(name, schemaName, schema, required, nullable) {
                                 style: { marginTop: ".5rem", marginBottom: ".5rem" },
                                 children: (0, createDescription_1.createDescription)(description),
                             })),
-                            (0, utils_1.guard)((0, schema_1.getQualifierMessage)(schema), (message) => (0, utils_1.create)("div", {
-                                style: { marginTop: ".5rem", marginBottom: ".5rem" },
-                                children: (0, createDescription_1.createDescription)(message),
-                            })),
                             createNodes(schema, SCHEMA_TYPE),
                         ],
                     }),
@@ -465,12 +458,6 @@ function createPropertyDiscriminator(name, schemaName, schema, discriminator, re
                     },
                     children: (0, createDescription_1.createDescription)(description),
                 })),
-                (0, utils_1.guard)((0, schema_1.getQualifierMessage)(discriminator), (message) => (0, utils_1.create)("div", {
-                    style: {
-                        paddingLeft: "1rem",
-                    },
-                    children: (0, createDescription_1.createDescription)(message),
-                })),
                 (0, utils_1.create)("DiscriminatorTabs", {
                     className: "openapi-tabs__discriminator",
                     children: Object.keys(discriminator === null || discriminator === void 0 ? void 0 : discriminator.mapping).map((key, index) => {
@@ -554,7 +541,6 @@ function createEdges({ name, schema, required, discriminator, }) {
             name,
             required: Array.isArray(required) ? required.includes(name) : required,
             schemaName: mergedSchemaName,
-            qualifierMessage: (0, schema_1.getQualifierMessage)(mergedSchemas),
             schema: mergedSchemas,
         });
     }
@@ -564,7 +550,6 @@ function createEdges({ name, schema, required, discriminator, }) {
         name,
         required: Array.isArray(required) ? required.includes(name) : required,
         schemaName: schemaName,
-        qualifierMessage: (0, schema_1.getQualifierMessage)(schema),
         schema: schema,
     });
 }
@@ -633,15 +618,7 @@ function createNodes(schema, schemaType) {
                 marginTop: ".5rem",
                 marginBottom: ".5rem",
             },
-            children: [
-                (0, createDescription_1.createDescription)(schema.type),
-                (0, utils_1.guard)((0, schema_1.getQualifierMessage)(schema), (message) => (0, utils_1.create)("div", {
-                    style: {
-                        paddingTop: "1rem",
-                    },
-                    children: (0, createDescription_1.createDescription)(message),
-                })),
-            ],
+            children: [(0, createDescription_1.createDescription)(schema.type)],
         });
     }
     // handle circular references
@@ -651,15 +628,7 @@ function createNodes(schema, schemaType) {
                 marginTop: ".5rem",
                 marginBottom: ".5rem",
             },
-            children: [
-                (0, createDescription_1.createDescription)(schema),
-                (0, utils_1.guard)((0, schema_1.getQualifierMessage)(schema), (message) => (0, utils_1.create)("div", {
-                    style: {
-                        paddingTop: "1rem",
-                    },
-                    children: (0, createDescription_1.createDescription)(message),
-                })),
-            ],
+            children: [(0, createDescription_1.createDescription)(schema)],
         });
     }
     // Unknown node/schema type should return undefined

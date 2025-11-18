@@ -22,8 +22,6 @@ exports.getSerializedValue = getSerializedValue;
 exports.langFromMime = langFromMime;
 exports.isNamedDefinition = isNamedDefinition;
 exports.getDefinitionName = getDefinitionName;
-exports.humanizeNumberRange = humanizeNumberRange;
-exports.humanizeConstraints = humanizeConstraints;
 exports.sortByRequired = sortByRequired;
 exports.sortByField = sortByField;
 exports.mergeParams = mergeParams;
@@ -365,86 +363,6 @@ function getDefinitionName(pointer) {
     var _a;
     const [name] = ((_a = pointer === null || pointer === void 0 ? void 0 : pointer.match(DEFINITION_NAME_REGEX)) === null || _a === void 0 ? void 0 : _a.reverse()) || [];
     return name;
-}
-function humanizeMultipleOfConstraint(multipleOf) {
-    if (multipleOf === undefined) {
-        return;
-    }
-    const strigifiedMultipleOf = multipleOf.toString(10);
-    if (!/^0\.0*1$/.test(strigifiedMultipleOf)) {
-        return `multiple of ${strigifiedMultipleOf}`;
-    }
-    return `decimal places <= ${strigifiedMultipleOf.split(".")[1].length}`;
-}
-function humanizeRangeConstraint(description, min, max) {
-    let stringRange;
-    if (min !== undefined && max !== undefined) {
-        if (min === max) {
-            stringRange = `= ${min} ${description}`;
-        }
-        else {
-            stringRange = `[ ${min} .. ${max} ] ${description}`;
-        }
-    }
-    else if (max !== undefined) {
-        stringRange = `<= ${max} ${description}`;
-    }
-    else if (min !== undefined) {
-        if (min === 1) {
-            stringRange = "non-empty";
-        }
-        else {
-            stringRange = `>= ${min} ${description}`;
-        }
-    }
-    return stringRange;
-}
-function humanizeNumberRange(schema) {
-    var _a, _b;
-    const minimum = typeof schema.exclusiveMinimum === "number"
-        ? Math.min(schema.exclusiveMinimum, (_a = schema.minimum) !== null && _a !== void 0 ? _a : Infinity)
-        : schema.minimum;
-    const maximum = typeof schema.exclusiveMaximum === "number"
-        ? Math.max(schema.exclusiveMaximum, (_b = schema.maximum) !== null && _b !== void 0 ? _b : -Infinity)
-        : schema.maximum;
-    const exclusiveMinimum = typeof schema.exclusiveMinimum === "number" || schema.exclusiveMinimum;
-    const exclusiveMaximum = typeof schema.exclusiveMaximum === "number" || schema.exclusiveMaximum;
-    if (minimum !== undefined && maximum !== undefined) {
-        return `${exclusiveMinimum ? "( " : "[ "}${minimum} .. ${maximum}${exclusiveMaximum ? " )" : " ]"}`;
-    }
-    else if (maximum !== undefined) {
-        return `${exclusiveMaximum ? "< " : "<= "}${maximum}`;
-    }
-    else if (minimum !== undefined) {
-        return `${exclusiveMinimum ? "> " : ">= "}${minimum}`;
-    }
-}
-function humanizeConstraints(schema) {
-    const res = [];
-    const stringRange = humanizeRangeConstraint("characters", schema.minLength, schema.maxLength);
-    if (stringRange !== undefined) {
-        res.push(stringRange);
-    }
-    const arrayRange = humanizeRangeConstraint("items", schema.minItems, schema.maxItems);
-    if (arrayRange !== undefined) {
-        res.push(arrayRange);
-    }
-    const propertiesRange = humanizeRangeConstraint("properties", schema.minProperties, schema.maxProperties);
-    if (propertiesRange !== undefined) {
-        res.push(propertiesRange);
-    }
-    const multipleOfConstraint = humanizeMultipleOfConstraint(schema.multipleOf);
-    if (multipleOfConstraint !== undefined) {
-        res.push(multipleOfConstraint);
-    }
-    const numberRange = humanizeNumberRange(schema);
-    if (numberRange !== undefined) {
-        res.push(numberRange);
-    }
-    if (schema.uniqueItems) {
-        res.push("unique");
-    }
-    return res;
 }
 function sortByRequired(fields, order = []) {
     const unrequiredFields = [];

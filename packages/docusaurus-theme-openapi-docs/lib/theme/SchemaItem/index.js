@@ -18,6 +18,7 @@ const Example_1 = require("@theme/Example");
 const Markdown_1 = __importDefault(require("@theme/Markdown"));
 const translationIds_1 = require("@theme/translationIds");
 const clsx_1 = __importDefault(require("clsx"));
+const schema_1 = require("../../markdown/schema");
 const utils_1 = require("../../markdown/utils");
 const transformEnumDescriptions = (enumDescriptions) => {
   if (enumDescriptions) {
@@ -127,8 +128,12 @@ function SchemaItem(props) {
         react_1.default.createElement(Markdown_1.default, null, description)
       )
   );
+  // Generate qualifierMessage from schema if not provided
+  const effectiveQualifierMessage =
+    qualifierMessage ??
+    (schema ? (0, schema_1.getQualifierMessage)(schema) : undefined);
   const renderQualifierMessage = (0, utils_1.guard)(
-    qualifierMessage,
+    effectiveQualifierMessage,
     (message) =>
       react_1.default.createElement(
         react_1.default.Fragment,

@@ -19,8 +19,6 @@ export declare function getSerializedValue(field: any, example: any): any;
 export declare function langFromMime(contentType: string): string;
 export declare function isNamedDefinition(pointer?: string): boolean;
 export declare function getDefinitionName(pointer?: string): string | undefined;
-export declare function humanizeNumberRange(schema: OpenAPISchema): string | undefined;
-export declare function humanizeConstraints(schema: OpenAPISchema): string[];
 export declare function sortByRequired(fields: any[], order?: string[]): any[];
 export declare function sortByField(fields: any[], param: "name" | "description" | "kind"): any[];
 export declare function mergeParams(parser: OpenAPIParser, pathParams?: Array<Referenced<OpenAPIParameter>>, operationParams?: Array<Referenced<OpenAPIParameter>>): Array<Referenced<OpenAPIParameter>>;

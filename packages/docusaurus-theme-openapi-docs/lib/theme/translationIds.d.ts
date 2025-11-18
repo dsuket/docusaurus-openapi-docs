@@ -56,6 +56,8 @@ export declare const OPENAPI_SCHEMA: {
     NO_SCHEMA: string;
 };
 export declare const OPENAPI_SCHEMA_ITEM: {
+    CHARACTERS: string;
+    NON_EMPTY: string;
     REQUIRED: string;
     DEPRECATED: string;
     NULLABLE: string;
@@ -67,6 +69,7 @@ export declare const OPENAPI_SCHEMA_ITEM: {
     ENUM_VALUE: string;
     ENUM_DESCRIPTION: string;
     POSSIBLE_VALUES: string;
+    EXPRESSION: string;
     ONE_OF: string;
     ANY_OF: string;
 };

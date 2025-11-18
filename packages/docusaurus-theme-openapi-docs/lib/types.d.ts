@@ -8,7 +8,7 @@ export interface ThemeConfig {
 }
 export type JSONSchema = JSONSchema4 | JSONSchema6 | JSONSchema7;
 export type SchemaObject = Omit<JSONSchema, "type" | "allOf" | "oneOf" | "anyOf" | "not" | "items" | "properties" | "additionalProperties"> & {
-    type?: "string" | "number" | "integer" | "boolean" | "object" | "array";
+    type?: "string" | "number" | "integer" | "boolean" | "object" | "array" | "null";
     allOf?: SchemaObject[];
     oneOf?: SchemaObject[];
     anyOf?: SchemaObject[];

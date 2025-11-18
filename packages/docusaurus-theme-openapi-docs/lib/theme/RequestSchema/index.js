@@ -12,15 +12,15 @@ var __importDefault =
   };
 Object.defineProperty(exports, "__esModule", { value: true });
 const react_1 = __importDefault(require("react"));
-const Translate_1 = require("@docusaurus/Translate");
-const translationIds_1 = require("@theme/translationIds");
 const BrowserOnly_1 = __importDefault(require("@docusaurus/BrowserOnly"));
+const Translate_1 = require("@docusaurus/Translate");
 const Details_1 = __importDefault(require("@theme/Details"));
 const Markdown_1 = __importDefault(require("@theme/Markdown"));
 const MimeTabs_1 = __importDefault(require("@theme/MimeTabs")); // Assume these components exist
 const Schema_1 = __importDefault(require("@theme/Schema"));
 const SkeletonLoader_1 = __importDefault(require("@theme/SkeletonLoader"));
 const TabItem_1 = __importDefault(require("@theme/TabItem"));
+const translationIds_1 = require("@theme/translationIds");
 const RequestSchemaComponent = ({ title, body, style }) => {
   if (
     body === undefined ||

@@ -27,7 +27,6 @@ const ResponseHeaders = ({ responseHeaders }) => {
         name: name,
         collapsible: false,
         schemaName: (0, schema_1.getSchemaName)(schema),
-        qualifierMessage: (0, schema_1.getQualifierMessage)(schema),
         schema: schema,
         discriminator: false,
         children: null,

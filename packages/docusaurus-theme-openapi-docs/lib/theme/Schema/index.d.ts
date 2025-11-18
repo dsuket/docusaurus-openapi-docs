@@ -1,5 +1,5 @@
 import React from "react";
-import { SchemaObject } from "docusaurus-plugin-openapi-docs/lib/openapi/types";
+import { SchemaObject } from "../../types";
 interface SchemaProps {
     schema: SchemaObject;
     schemaType: "request" | "response";

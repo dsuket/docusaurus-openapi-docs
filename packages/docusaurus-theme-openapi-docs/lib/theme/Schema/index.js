@@ -13,7 +13,6 @@ var __importDefault =
 Object.defineProperty(exports, "__esModule", { value: true });
 const react_1 = __importDefault(require("react"));
 const Translate_1 = require("@docusaurus/Translate");
-const translationIds_1 = require("@theme/translationIds");
 const ArrayBrackets_1 = require("@theme/ArrayBrackets");
 const Details_1 = __importDefault(require("@theme/Details"));
 const DiscriminatorTabs_1 = __importDefault(
@@ -23,11 +22,12 @@ const Markdown_1 = __importDefault(require("@theme/Markdown"));
 const SchemaItem_1 = __importDefault(require("@theme/SchemaItem"));
 const SchemaTabs_1 = __importDefault(require("@theme/SchemaTabs"));
 const TabItem_1 = __importDefault(require("@theme/TabItem"));
+const translationIds_1 = require("@theme/translationIds");
 // eslint-disable-next-line import/no-extraneous-dependencies
 const allof_merge_1 = require("allof-merge");
 const clsx_1 = __importDefault(require("clsx"));
-const schema_1 = require("docusaurus-plugin-openapi-docs/lib/markdown/schema");
 const isEmpty_1 = __importDefault(require("lodash/isEmpty"));
+const schema_1 = require("../../markdown/schema");
 // eslint-disable-next-line import/no-extraneous-dependencies
 // const jsonSchemaMergeAllOf = require("json-schema-merge-allof");
 const mergeAllOf = (allOf) => {
@@ -139,9 +139,6 @@ const AnyOneOf = ({ schema, schemaType }) => {
                 collapsible: false,
                 name: undefined,
                 schemaName: anyOneSchema.type,
-                qualifierMessage: (0, schema_1.getQualifierMessage)(
-                  anyOneSchema
-                ),
                 schema: anyOneSchema,
                 discriminator: false,
                 children: null,
@@ -155,9 +152,6 @@ const AnyOneOf = ({ schema, schemaType }) => {
                 collapsible: false,
                 name: undefined,
                 schemaName: anyOneSchema.type,
-                qualifierMessage: (0, schema_1.getQualifierMessage)(
-                  anyOneSchema
-                ),
                 schema: anyOneSchema,
                 discriminator: false,
                 children: null,
@@ -412,7 +406,6 @@ const AdditionalProperties = ({ schema, schemaType }) => {
       name: "property name*",
       required: false,
       schemaName: "any",
-      qualifierMessage: (0, schema_1.getQualifierMessage)(schema),
       schema: schema,
       collapsible: false,
       discriminator: false,
@@ -453,7 +446,6 @@ const AdditionalProperties = ({ schema, schemaType }) => {
       name: "property name*",
       required: false,
       schemaName: schemaName,
-      qualifierMessage: (0, schema_1.getQualifierMessage)(schema),
       schema: additionalProperties,
       collapsible: false,
       discriminator: false,
@@ -552,7 +544,6 @@ const Items = ({ schema, schemaType }) => {
         collapsible: false,
         name: "", // No name for array items
         schemaName: (0, schema_1.getSchemaName)(itemsSchema),
-        qualifierMessage: (0, schema_1.getQualifierMessage)(itemsSchema),
         schema: itemsSchema,
         discriminator: false,
         children: null,
@@ -710,7 +701,6 @@ const SchemaEdge = ({ name, schema, required, discriminator, schemaType }) => {
       name: name,
       required: Array.isArray(required) ? required.includes(name) : required,
       schemaName: mergedSchemaName,
-      qualifierMessage: (0, schema_1.getQualifierMessage)(mergedSchemas),
       schema: mergedSchemas,
       discriminator: false,
       children: null,
@@ -721,7 +711,6 @@ const SchemaEdge = ({ name, schema, required, discriminator, schemaType }) => {
     name: name,
     required: Array.isArray(required) ? required.includes(name) : required,
     schemaName: schemaName,
-    qualifierMessage: (0, schema_1.getQualifierMessage)(schema),
     schema: schema,
     discriminator: false,
     children: null,
@@ -823,7 +812,6 @@ const SchemaNode = ({ schema, schemaType }) => {
       name: schema.type,
       required: Boolean(schema.required),
       schemaName: schemaName,
-      qualifierMessage: (0, schema_1.getQualifierMessage)(schema),
       schema: schema,
       discriminator: false,
       children: null,
