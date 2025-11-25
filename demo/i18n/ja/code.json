@@ -108,7 +108,7 @@
     "description": "The label for security scheme"
   },
   "theme.openapi.responseExamples.example": {
-    "message": "例",
+    "message": "例:",
     "description": "The label for example"
   },
   "theme.openapi.responseExamples.autoExample": {
@@ -116,7 +116,7 @@
     "description": "The label for auto-generated example"
   },
   "theme.openapi.body.exampleFromSchema": {
-    "message": "スキーマから生成された例",
+    "message": "例(スキーマから生成)",
     "description": "The label for example from schema"
   },
   "theme.openapi.statusCodes.responseHeaders": {
@@ -124,7 +124,7 @@
     "description": "The label for response headers"
   },
   "theme.openapi.statusCodes.schemaTitle": {
-    "message": "Schema",
+    "message": "スキーマ",
     "description": "The title for schema section"
   },
   "theme.openapi.schema.noSchema": {
@@ -144,35 +144,35 @@
     "description": "The label for nullable schema item"
   },
   "theme.openapi.schemaItem.defaultValue": {
-    "message": "デフォルト値",
+    "message": "デフォルト値:",
     "description": "The label for default value"
   },
   "theme.openapi.schemaItem.example": {
-    "message": "例",
+    "message": "例:",
     "description": "The label for example"
   },
   "theme.openapi.schemaItem.examples": {
-    "message": "例",
+    "message": "例:",
     "description": "The label for examples"
   },
   "theme.openapi.schemaItem.description": {
-    "message": "説明",
+    "message": "説明:",
     "description": "The label for description"
   },
   "theme.openapi.schemaItem.constantValue": {
-    "message": "定数値",
+    "message": "定数値:",
     "description": "The label for constant value"
   },
   "theme.openapi.schemaItem.enumValue": {
-    "message": "列挙値",
+    "message": "列挙値:",
     "description": "The label for enum value"
   },
   "theme.openapi.schemaItem.enumDescription": {
-    "message": "列挙値の説明",
+    "message": "説明:",
     "description": "The label for enum description"
   },
   "theme.openapi.schemaItem.possibleValues": {
-    "message": "使用可能な値",
+    "message": "使用可能な値:",
     "description": "The label for possible values"
   },
   "theme.openapi.schemaItem.oneOf": {
